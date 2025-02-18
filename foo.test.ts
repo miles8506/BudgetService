@@ -19,7 +19,7 @@ const res: IBudget[] = [{
   }]
 
 class BudgetRepo {
-  GetAll(): Promise<IBudget[]> {
+  public GetAll(): Promise<IBudget[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(res)
@@ -31,7 +31,7 @@ class BudgetRepo {
 const budgetRepo = new BudgetRepo()
 
 class BudgetService {
-  formatData(data: IBudget[]) {
+  private formatData(data: IBudget[]) {
     const map = new Map<string, IBudget>()
 
     for (const item of data) {
@@ -41,15 +41,15 @@ class BudgetService {
     return map
   }
 
-  getDifferenceDaysCount(start: string, end: string) {
+  private getDifferenceDaysCount(start: string, end: string) {
     return dayjs(end).diff(dayjs(start), 'day') + 1
   }
 
-  getCurrentDaysInMonth(date: string) {
+  private getCurrentDaysInMonth(date: string) {
     return dayjs(date).daysInMonth()
   }
 
-  async query(start: string, end: string) {
+  public async query(start: string, end: string) {
     const res = await budgetRepo.GetAll()
     const data = this.formatData(res)
     const differenceDaysCount = this.getDifferenceDaysCount(start, end)
